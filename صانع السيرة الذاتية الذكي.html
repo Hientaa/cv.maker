@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="description" content="صانع السيرة الذاتية الذكي المتوافق مع ATS - تطوير كادر جمعية حنطة التنموية الخيرية">
+<meta name="theme-color" content="#020617">
+<title>صانع السيرة الذاتية الذكي | تطوير كادر جمعية حنطة التنموية الخيرية</title>
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Cairo', 'Segoe UI', 'Tahoma', 'sans-serif'] },
+        colors: {
+          brand: {
+            50:'#f0f9ff',100:'#e0f2fe',500:'#0284c7',600:'#0284c7',
+            700:'#0369a1',800:'#075985',900:'#0c4a6e'
+          }
+        }
+      }
+    }
+  }
+</script>
+
+<!-- Google Fonts: Cairo -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+  /* ============ Base ============ */
+  * { -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif; }
+
+  /* ============ Scrollbar ============ */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #0f172a; }
+  ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #475569; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* ============ Color Themes ============ */
+  .theme-slate   { --primary:#0f172a; --primary-light:#f8fafc; --primary-border:#cbd5e1; }
+  .theme-blue    { --primary:#1e40af; --primary-light:#eff6ff; --primary-border:#bfdbfe; }
+  .theme-emerald { --primary:#047857; --primary-light:#ecfdf5; --primary-border:#a7f3d0; }
+  .theme-violet  { --primary:#6d28d9; --primary-light:#f5f3ff; --primary-border:#ddd6fe; }
+  .theme-rose    { --primary:#be123c; --primary-light:#fff1f2; --primary-border:#fecdd3; }
+  .theme-amber   { --primary:#b45309; --primary-light:#fffbeb; --primary-border:#fde68a; }
+  .theme-cyan    { --primary:#0e7490; --primary-light:#ecfeff; --primary-border:#a5f3fc; }
+
+  .cv-dynamic-bg          { background-color: var(--primary); }
+  .cv-dynamic-text        { color: var(--primary); }
+  .cv-dynamic-bg-light    { background-color: var(--primary-light); }
+  .cv-dynamic-border      { border-color: var(--primary); }
+  .cv-dynamic-border-light{ border-color: var(--primary-border); }
+
+  .glass-effect {
+    background: rgba(15,23,42,.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* ============ CV Paper ============ */
+  .cv-paper {
+    width: 100%;
+    max-width: 800px;
+    background: #fff;
+    color: #0f172a;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .photo-frame { position: relative; transition: transform .3s ease; }
+  .photo-frame:hover { transform: scale(1.03); }
+
+  /* ============ Section Title Base ============ */
+  .cv-section-title {
+    font-size: .72rem; font-weight: 800; letter-spacing: .08em;
+    text-transform: uppercase; margin-bottom: .55rem;
+    display: flex; align-items: center; gap: .4rem;
+    color: var(--primary);
+  }
+  .cv-section-title .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--primary); flex-shrink: 0;
+  }
+
+  /* ============ Template: SIDEBAR ============ */
+  .tpl-sidebar { padding: 0 !important; }
+  .tpl-sidebar .cv-header-wrap { display: none !important; }
+  .tpl-sidebar .cv-body { display: block; padding: 14mm 16mm; }
+  .tpl-sidebar .cv-sidebar {
+    display: flex !important;
+    flex-direction: column;
+    gap: 1rem;
+    background: var(--primary);
+    color: #fff;
+    padding: 1.5rem 1.25rem;
+    border-radius: 10px;
+    margin-bottom: 1.25rem;
+  }
+  .tpl-sidebar .cv-sidebar h1,
+  .tpl-sidebar .cv-sidebar p,
+  .tpl-sidebar .cv-sidebar div { color: #fff !important; }
+  .tpl-sidebar .cv-sidebar .cv-sidebar-section-title {
+    font-size: .65rem; font-weight: 800; letter-spacing: .1em;
+    text-transform: uppercase; opacity: .85; margin-bottom: .4rem;
+    border-bottom: 1px solid rgba(255,255,255,.25); padding-bottom: .3rem;
+  }
+  .tpl-sidebar .cv-main-col { width: 100%; }
+
+  /* ============ Template: MINIMAL ============ */
+  .tpl-minimal .cv-header-wrap {
+    flex-direction: column !important;
+    text-align: center;
+    border-bottom: none !important;
+    padding-bottom: .5rem !important;
+  }
+  .tpl-minimal .cv-header-inner {
+    flex-direction: column !important;
+    text-align: center;
+    gap: .75rem !important;
+  }
+  .tpl-minimal .cv-contact { justify-content: center !important; }
+
+  /* ============ Template: EXECUTIVE ============ */
+  .tpl-executive .cv-header-wrap {
+    border-top: 6px solid var(--primary) !important;
+    padding-top: 1rem !important;
+    border-bottom: 1px solid var(--primary-border) !important;
+  }
+  .tpl-executive .cv-section-title {
+    background: var(--primary-light);
+    padding: .4rem .6rem;
+    border-inline-start: 4px solid var(--primary);
+    border-radius: 3px;
+    border-bottom: none !important;
+  }
+
+  /* ============ Template: MODERN ============ */
+  .tpl-modern .cv-header-wrap {
+    position: relative;
+    padding-inline-start: 1rem !important;
+    border-bottom: 1px solid var(--primary-border) !important;
+  }
+  .tpl-modern .cv-header-wrap::before {
+    content: ""; position: absolute;
+    inset-inline-start: 0; top: 0; bottom: 0;
+    width: 5px; border-radius: 4px;
+    background: linear-gradient(180deg, var(--primary), var(--primary-border));
+  }
+  .tpl-modern .cv-section-title::before {
+    content: ""; display: inline-block;
+    width: 14px; height: 3px;
+    background: var(--primary); border-radius: 2px;
+    margin-inline-end: .5rem; vertical-align: middle;
+  }
+  .tpl-modern .cv-section-title .dot { display: none; }
+
+  /* ============ Template: CREATIVE ============ */
+  .tpl-creative .cv-header-wrap {
+    border-bottom: 2px dashed var(--primary-border) !important;
+  }
+  .tpl-creative .cv-section-title {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff !important;
+    padding: .35rem .85rem;
+    border-radius: 999px;
+    font-weight: 700;
+    border-bottom: none !important;
+  }
+  .tpl-creative .cv-section-title .dot { display: none; }
+
+  /* ============ Template: COMPACT ============ */
+  .tpl-compact { font-size: .92em; }
+  .tpl-compact .cv-section-title { padding: .1rem 0; margin-bottom: .3rem !important; }
+  .tpl-compact .cv-header-wrap { padding-bottom: .65rem !important; }
+  .tpl-compact #cvExperienceDisplay > div { margin-bottom: .4rem !important; }
+  .tpl-compact .cv-body { margin-top: .75rem !important; }
+
+  /* ============ Template: TWo-Column ============ */
+  .tpl-twocolumn .cv-header-wrap {
+    border-bottom: 3px double var(--primary) !important;
+  }
+
+  /* ============ Mobile Panel ============ */
+  @media (max-width: 1023px) {
+    #panelEditor {
+      height: auto !important;
+      max-height: none !important;
+      position: static !important;
+    }
+    #panelEditor .overflow-y-auto { max-height: 68vh; }
+    main { padding: .75rem !important; gap: .75rem !important; }
+    header .max-w-7xl { padding: .5rem .75rem !important; }
+  }
+
+  /* ============ Print / PDF (A4, ATS-safe) ============ */
+  @media print {
+    html, body {
+      background: #ffffff !important;
+      color: #000000 !important;
+      margin: 0 !important; padding: 0 !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      font-size: 11pt;
+    }
+    .no-print { display: none !important; }
+    .cv-paper-container {
+      display: block !important;
+      padding: 0 !important; margin: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      width: 100% !important;
+    }
+    #cvPaper {
+      box-shadow: none !important;
+      margin: 0 !important;
+      width: 210mm !important;
+      min-height: 297mm !important;
+      max-width: 210mm !important;
+      border: none !important;
+      border-radius: 0 !important;
+      padding: 14mm 16mm !important;
+      page-break-after: avoid;
+    }
+    .tpl-sidebar { padding: 0 !important; }
+    .tpl-sidebar .cv-body { padding: 14mm 16mm !important; }
+    #cvPaper * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .page-break { page-break-inside: avoid; }
+    a { color: inherit !important; text-decoration: none !important; }
+    @page { size: A4 portrait; margin: 0; }
+  }
+
+  /* ============ Animations ============ */
+  .panel-fade { animation: fadeIn .25s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(4px);} to{opacity:1;transform:none;} }
+
+  .chip-active {
+    border-color: #0ea5e9 !important;
+    background-color: rgba(14,165,233,.15) !important;
+  }
+</style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans flex flex-col antialiased selection:bg-sky-500 selection:text-white">
+
+<!-- ==================== HEADER ==================== -->
+<header class="no-print bg-slate-950 border-b border-slate-800 sticky top-0 z-50 glass-effect">
+  <div class="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 flex items-center justify-between gap-3">
+    <div class="flex items-center gap-2.5 min-w-0">
+      <div class="bg-gradient-to-tr from-sky-600 to-blue-600 text-white p-2 rounded-xl font-black text-lg shadow-lg shadow-sky-500/20 flex-shrink-0">CV</div>
+      <div class="min-w-0">
+        <h1 class="font-bold text-sm sm:text-base leading-tight text-white flex items-center gap-2 flex-wrap">
+          <span>صانع السيرة الذاتية الذكي</span>
+          <span class="text-[9px] sm:text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30 font-semibold whitespace-nowrap">متوافق مع ATS</span>
+        </h1>
+        <div class="text-[10px] sm:text-xs text-sky-400 font-semibold flex items-center gap-1 select-none pointer-events-none mt-0.5 truncate">
+          <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          <span class="truncate">تطوير كادر جمعية حنطة التنموية الخيرية</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-1.5 flex-shrink-0">
+      <button onclick="loadSampleData()" class="px-2.5 sm:px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] sm:text-xs font-semibold rounded-lg border border-slate-700 transition flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+        <span class="hidden sm:inline">نموذج جاهز</span>
+      </button>
+      <button onclick="resetForm()" class="px-2.5 sm:px-3 py-2 bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 text-[11px] sm:text-xs font-semibold rounded-lg border border-rose-800/50 transition" title="تفريغ النموذج">
+        <span class="hidden sm:inline">تفرّغ</span>
+        <svg class="w-3.5 h-3.5 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+      <button onclick="exportToPDF()" class="px-3 sm:px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-[11px] sm:text-xs font-bold rounded-lg transition shadow-lg shadow-emerald-900/30 flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        <span class="hidden sm:inline">تصدير PDF</span>
+        <span class="sm:hidden">PDF</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ==================== MOBILE TABS ==================== -->
+<div class="no-print lg:hidden bg-slate-950 border-b border-slate-800 sticky top-[57px] z-40 shadow-lg">
+  <div class="flex text-xs font-bold">
+    <button id="mobBtnEditor" onclick="switchMobileTab('editor')" class="flex-1 py-3 text-sky-400 border-b-2 border-sky-500 bg-slate-900/50 flex items-center justify-center gap-2 transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+      إدخال البيانات
+    </button>
+    <button id="mobBtnPreview" onclick="switchMobileTab('preview')" class="flex-1 py-3 text-slate-400 border-b-2 border-transparent hover:text-slate-200 flex items-center justify-center gap-2 transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+      المعاينة والتحميل
+    </button>
+  </div>
+</div>
+
+<!-- ==================== MAIN ==================== -->
+<main class="flex-1 max-w-7xl w-full mx-auto p-3 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+  <!-- ========== LEFT: EDITOR ========== -->
+  <section id="panelEditor" class="no-print lg:col-span-6 xl:col-span-5 bg-slate-950/80 rounded-2xl border border-slate-800 shadow-2xl overflow-hidden flex flex-col lg:h-[calc(100vh-100px)] lg:sticky lg:top-20">
+
+    <div class="bg-slate-900 px-4 py-3 border-b border-slate-800 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2 flex-1 min-w-0">
+        <span class="text-xs font-bold text-slate-300 whitespace-nowrap">مستوى الاكتفاء:</span>
+        <div class="w-20 sm:w-24 bg-slate-800 h-2 rounded-full overflow-hidden flex-shrink-0">
+          <div id="progressBar" class="bg-sky-500 h-full w-0 transition-all duration-300"></div>
+        </div>
+        <span id="progressText" class="text-[11px] font-semibold text-sky-400 whitespace-nowrap">0%</span>
+      </div>
+      <div class="text-[10px] sm:text-[11px] font-bold text-slate-400 bg-slate-950 px-2 py-1 rounded-md border border-slate-800 select-none whitespace-nowrap">
+        <span class="text-sky-400 hidden sm:inline">تطوير كادر جمعية حنطة</span>
+        <span class="text-sky-400 sm:hidden">حنطة</span>
+      </div>
+    </div>
+
+    <div class="flex border-b border-slate-800 bg-slate-900/50 overflow-x-auto no-scrollbar text-xs font-semibold">
+      <button onclick="switchTab('personal')" id="tab-personal" class="tab-btn active px-3 sm:px-4 py-3 border-b-2 border-sky-500 text-sky-400 whitespace-nowrap">الشخصية</button>
+      <button onclick="switchTab('experience')" id="tab-experience" class="tab-btn px-3 sm:px-4 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap">الخبرات</button>
+      <button onclick="switchTab('education')" id="tab-education" class="tab-btn px-3 sm:px-4 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap">التعليم</button>
+      <button onclick="switchTab('skills')" id="tab-skills" class="tab-btn px-3 sm:px-4 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap">المهارات</button>
+      <button onclick="switchTab('style')" id="tab-style" class="tab-btn px-3 sm:px-4 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap">التصميم</button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-4 md:p-5 space-y-5">
+
+      <!-- ===== PERSONAL ===== -->
+      <div id="content-personal" class="tab-content space-y-4">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-800 pb-2">البيانات الشخصية</h2>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">الاسم الكامل</label>
+          <input type="text" id="inputFullName" oninput="updateCV()" class="w-full text-sm p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 focus:border-sky-500 focus:outline-none transition" placeholder="الاسم الكامل">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">المسمى الوظيفي</label>
+          <input type="text" id="inputJobTitle" oninput="updateCV()" class="w-full text-sm p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 focus:border-sky-500 focus:outline-none transition" placeholder="منسق مشاريع / أخصائي تنمية">
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">رقم الهاتف</label>
+            <input type="text" id="inputPhone" oninput="updateCV()" class="w-full text-sm p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 focus:border-sky-500 focus:outline-none transition" placeholder="0934808111">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">المدينة / الدولة</label>
+            <input type="text" id="inputAddress" oninput="updateCV()" class="w-full text-sm p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 focus:border-sky-500 focus:outline-none transition" placeholder="طرطوس، سورية">
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">البريد الإلكتروني</label>
+            <input type="email" id="inputEmail" oninput="updateCV()" class="w-full text-sm p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 focus:border-sky-500 focus:outline-none transition" placeholder="name@email.com">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">LinkedIn</label>
+            <input type="text" id="inputLinkedin" oninput="updateCV()" class="w-full text-sm p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 focus:border-sky-500 focus:outline-none transition" placeholder="linkedin.com/in/username">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">معرض الأعمال (اختياري)</label>
+          <input type="text" id="inputPortfolio" oninput="updateCV()" class="w-full text-sm p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 focus:border-sky-500 focus:outline-none transition" placeholder="behance.net/username">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">الملخص المهني</label>
+          <textarea id="inputSummary" oninput="updateCV()" rows="4" class="w-full text-sm p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 focus:border-sky-500 focus:outline-none resize-none transition" placeholder="اكتب ملخصاً مهنياً موجزاً يستعرض خبراتك ومهاراتك..."></textarea>
+        </div>
+      </div>
+
+      <!-- ===== EXPERIENCE ===== -->
+      <div id="content-experience" class="tab-content space-y-4 hidden">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">الخبرات المهنية</h2>
+          <button onclick="addExperienceItem()" class="text-xs px-2.5 py-1 bg-sky-950 text-sky-400 font-bold rounded-lg border border-sky-800 hover:bg-sky-900 transition">+ إضافة</button>
+        </div>
+        <div id="experienceList" class="space-y-4"></div>
+      </div>
+
+      <!-- ===== EDUCATION ===== -->
+      <div id="content-education" class="tab-content space-y-4 hidden">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">التعليم والمؤهلات</h2>
+          <button onclick="addEducationItem()" class="text-xs px-2.5 py-1 bg-sky-950 text-sky-400 font-bold rounded-lg border border-sky-800 hover:bg-sky-900 transition">+ إضافة</button>
+        </div>
+        <div id="educationList" class="space-y-4"></div>
+      </div>
+
+      <!-- ===== SKILLS ===== -->
+      <div id="content-skills" class="tab-content space-y-4 hidden">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">المهارات</h2>
+          <button onclick="addSkillItem()" class="text-xs px-2.5 py-1 bg-sky-950 text-sky-400 font-bold rounded-lg border border-sky-800 hover:bg-sky-900 transition">+ إضافة</button>
+        </div>
+        <div id="skillsList" class="space-y-2"></div>
+
+        <div class="pt-4 border-t border-slate-800">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">اللغات</h2>
+            <button onclick="addLanguageItem()" class="text-xs px-2.5 py-1 bg-sky-950 text-sky-400 font-bold rounded-lg border border-sky-800 hover:bg-sky-900 transition">+ إضافة</button>
+          </div>
+          <div id="languagesList" class="space-y-2"></div>
+        </div>
+      </div>
+
+      <!-- ===== STYLE ===== -->
+      <div id="content-style" class="tab-content space-y-5 hidden">
+
+        <div>
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-800 pb-2 mb-3">الصورة الشخصية</h2>
+          <div class="flex items-center gap-3 bg-slate-900 p-3 rounded-xl border border-slate-800 flex-wrap">
+            <input type="file" id="inputPhoto" accept="image/*" onchange="handlePhotoUpload(event)" class="text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-sky-950 file:text-sky-400 hover:file:bg-sky-900 file:cursor-pointer cursor-pointer">
+            <button onclick="removePhoto()" id="btnRemovePhoto" class="hidden text-xs text-rose-400 hover:text-rose-300 font-semibold">✕ إزالة الصورة</button>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-2">💡 الصورة ستظهر بحجم كبير وواضح أعلى السيرة الذاتية.</p>
+        </div>
+
+        <div>
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-800 pb-2 mb-3">قالب التصميم <span class="text-sky-400">(8 قوالب)</span></h2>
+          <div id="templateGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
+        </div>
+
+        <div>
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-800 pb-2 mb-3">اللون الرئيسي <span class="text-sky-400">(7 ألوان)</span></h2>
+          <div id="themeGrid" class="flex items-center gap-3 flex-wrap"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== RIGHT: PREVIEW ========== -->
+  <section id="panelPreview" class="cv-paper-container hidden lg:flex lg:col-span-6 xl:col-span-7 flex-col items-center justify-start w-full">
+
+    <div class="no-print w-full mb-3 flex items-center justify-between text-xs text-slate-400 px-1">
+      <span class="flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        معاينة حية — A4 جاهز للطباعة والـ ATS
+      </span>
+      <span class="font-mono">210 × 297 mm</span>
+    </div>
+
+    <!-- ===== CV PAPER ===== -->
+    <div id="cvPaper" class="cv-paper tpl-classic theme-blue bg-white text-slate-900 shadow-2xl rounded-sm border border-slate-200 transition-all duration-300" style="padding: 14mm 16mm;">
+
+      <!-- ===== HEADER (classic/minimal/executive/modern/creative/compact/twocolumn) ===== -->
+      <div id="cvHeader" class="cv-header-wrap border-b-2 pb-5 cv-dynamic-border flex justify-between items-center gap-4">
+        <div class="cv-header-inner flex items-center gap-5 flex-1 w-full">
+          <div class="photo-frame flex-shrink-0">
+            <img id="cvPhotoDisplay" class="hidden w-32 h-32 md:w-36 md:h-36 rounded-full object-cover border-4 cv-dynamic-border-light shadow-lg" alt="صورة شخصية">
+            <div id="photoPlaceholder" class="w-32 h-32 md:w-36 md:h-36 rounded-full cv-dynamic-bg-light border-2 border-dashed cv-dynamic-border-light flex items-center justify-center text-[10px] text-slate-400 font-semibold text-center px-2">لا توجد صورة</div>
+          </div>
+          <div class="space-y-1.5 min-w-0 flex-1">
+            <h1 id="cvFullName" class="text-2xl md:text-3xl font-extrabold cv-dynamic-text tracking-tight leading-tight">الاسم الكامل</h1>
+            <p id="cvJobTitle" class="text-sm md:text-base font-semibold text-slate-600">المسمى الوظيفي</p>
+            <div id="cvContactDetails" class="cv-contact text-xs text-slate-600 flex flex-wrap gap-x-4 gap-y-1 pt-1">
+              <div id="cvPhoneDisplay"></div>
+              <div id="cvAddressDisplay"></div>
+              <div id="cvEmailDisplay"></div>
+              <div id="cvLinkedinDisplay"></div>
+              <div id="cvPortfolioDisplay"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== SIDEBAR (only for sidebar template) ===== -->
+      <div class="cv-sidebar hidden">
+        <img id="cvPhotoSidebar" class="hidden w-32 h-32 rounded-full object-cover border-4 border-white/30 shadow-lg mx-auto" alt="صورة">
+        <div class="text-center">
+          <h1 id="cvFullNameSidebar" class="text-lg font-extrabold leading-tight">الاسم</h1>
+          <p id="cvJobTitleSidebar" class="text-xs opacity-90 mt-1">المسمى</p>
+        </div>
+        <div>
+          <div class="cv-sidebar-section-title">معلومات الاتصال</div>
+          <div id="cvContactSidebar" class="text-[11px] space-y-1.5 break-words"></div>
+        </div>
+        <div>
+          <div class="cv-sidebar-section-title">المهارات</div>
+          <div id="cvSkillsSidebar" class="text-[11px] space-y-1"></div>
+        </div>
+        <div>
+          <div class="cv-sidebar-section-title">اللغات</div>
+          <div id="cvLanguagesSidebar" class="text-[11px] space-y-1"></div>
+        </div>
+      </div>
+
+      <!-- ===== BODY ===== -->
+      <div class="cv-body mt-5 space-y-5">
+
+        <div id="cvSummarySection">
+          <h2 class="cv-section-title"><span class="dot"></span>النبذة التعريفية</h2>
+          <p id="cvSummary" class="text-xs md:text-sm text-slate-700 leading-relaxed"></p>
+        </div>
+
+        <div class="cv-main-col">
+          <div id="cvExperienceSection" class="mb-5">
+            <h2 class="cv-section-title"><span class="dot"></span>الخبرات المهنية</h2>
+            <div id="cvExperienceDisplay" class="space-y-3.5"></div>
+          </div>
+
+          <div id="cvEducationSection" class="mb-5">
+            <h2 class="cv-section-title"><span class="dot"></span>التعليم والمؤهلات</h2>
+            <div id="cvEducationDisplay" class="space-y-2.5"></div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 pt-1">
+            <div id="cvSkillsSection">
+              <h2 class="cv-section-title"><span class="dot"></span>المهارات</h2>
+              <div id="cvSkillsDisplay" class="flex flex-wrap gap-1.5"></div>
+            </div>
+            <div id="cvLanguagesSection">
+              <h2 class="cv-section-title"><span class="dot"></span>اللغات</h2>
+              <div id="cvLanguagesDisplay" class="space-y-1.5"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="no-print absolute bottom-3 left-6 text-[9px] text-slate-400 font-semibold select-none pointer-events-none">
+        تطوير كادر جمعية حنطة التنموية الخيرية
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ==================== SCRIPT ==================== -->
+<script>
+/* ================= Templates ================= */
+const TEMPLATES = [
+  { id:'classic',   name:'كلاسيكي',   icon:'📄', desc:'أنيق وواضح' },
+  { id:'sidebar',   name:'شريط جانبي', icon:'📋', desc:'عمودان' },
+  { id:'minimal',   name:'بسيط',      icon:'◻️', desc:'نظيف' },
+  { id:'executive', name:'رسمي',      icon:'🏛️', desc:'تنفيذي' },
+  { id:'modern',    name:'عصري',      icon:'⚡', desc:'شريط لوني' },
+  { id:'creative',  name:'إبداعي',    icon:'🎨', desc:'دوائر' },
+  { id:'compact',   name:'مُدمج',     icon:'📐', desc:'مكثف' },
+  { id:'twocolumn', name:'عمودان',    icon:'📊', desc:'منظم' }
+];
+
+/* ================= Themes ================= */
+const THEMES = [
+  { id:'slate',   name:'أسود',   color:'#0f172a' },
+  { id:'blue',    name:'أزرق',   color:'#1e40af' },
+  { id:'emerald', name:'أخضر',   color:'#047857' },
+  { id:'violet',  name:'بنفسجي', color:'#6d28d9' },
+  { id:'rose',    name:'وردي',   color:'#be123c' },
+  { id:'amber',   name:'ذهبي',   color:'#b45309' },
+  { id:'cyan',    name:'سماوي',  color:'#0e7490' }
+];
+
+/* ================= Sample Data ================= */
+const defaultSyriaState = {
+  fullName: 'أحمد محمد الحسن',
+  jobTitle: 'منسق مشاريع تنموية',
+  phone: '0934808111',
+  address: 'طرطوس، سورية',
+  email: 'ahmad@example.com',
+  linkedin: 'linkedin.com/in/ahmad',
+  portfolio: '',
+  summary: 'منسق مشاريع تنموية بخبرة تزيد عن 5 سنوات في إدارة المبادرات الإنسانية والتنموية. متخصص في تخطيط المشاريع، إدارة الفرق الميدانية، وكتابة التقارير التنموية وفق المعايير الدولية.',
+  photo: '',
+  experiences: [
+    { id:1, title:'منسق مشاريع', company:'جمعية حنطة التنموية الخيرية - طرطوس', dates:'2021 - الحالي', description:'إدارة مشاريع تنموية متعددة في مجال الأمن الغذائي والتعليم، مع الإشراف على الفرق الميدانية وإعداد التقارير الدورية للمانحين.' },
+    { id:2, title:'مسؤول ميداني', company:'منظمة إنسانية - سورية', dates:'2019 - 2021', description:'تنفيذ الأنشطة الميدانية وتوزيع المساعدات، والتنسيق مع المجالس المحلية والمستفيدين.' }
+  ],
+  education: [
+    { id:1, degree:'بكالوريوس إدارة أعمال', institution:'جامعة تشرين', dates:'2015 - 2019' }
+  ],
+  skills: [
+    { name:'إدارة المشاريع', level:'متقدم' },
+    { name:'التقارير التنموية', level:'خبير' },
+    { name:'Microsoft Office', level:'متقدم' },
+    { name:'إدارة الفرق', level:'متقدم' }
+  ],
+  languages: [
+    { name:'العربية', level:'اللغة الأم' },
+    { name:'الإنجليزية', level:'جيد جداً' }
+  ],
+  theme: 'blue',
+  template: 'classic'
+};
+
+const emptyState = {
+  fullName:'', jobTitle:'', phone:'', address:'', email:'', linkedin:'', portfolio:'',
+  summary:'', photo:'', experiences:[], education:[], skills:[], languages:[],
+  theme:'blue', template:'classic'
+};
+
+let cvState = JSON.parse(JSON.stringify(emptyState));
+const STORAGE_KEY = 'smart_cv_hinta_ats_v2';
+
+/* ================= Init ================= */
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) { try { cvState = Object.assign({}, emptyState, JSON.parse(saved)); } catch(e){} }
+  populateFormFromState();
+  buildTemplateGrid();
+  buildThemeGrid();
+  renderAll();
+});
+
+function populateFormFromState() {
+  document.getElementById('inputFullName').value = cvState.fullName || '';
+  document.getElementById('inputJobTitle').value = cvState.jobTitle || '';
+  document.getElementById('inputPhone').value    = cvState.phone    || '';
+  document.getElementById('inputAddress').value  = cvState.address  || '';
+  document.getElementById('inputEmail').value    = cvState.email    || '';
+  document.getElementById('inputLinkedin').value = cvState.linkedin || '';
+  document.getElementById('inputPortfolio').value= cvState.portfolio|| '';
+  document.getElementById('inputSummary').value  = cvState.summary  || '';
+
+  if (cvState.photo) {
+    ['cvPhotoDisplay','cvPhotoSidebar'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.src = cvState.photo; el.classList.remove('hidden'); }
+    });
+    document.getElementById('photoPlaceholder').classList.add('hidden');
+    document.getElementById('btnRemovePhoto').classList.remove('hidden');
+  }
+
+  renderExperienceInputs();
+  renderEducationInputs();
+  renderSkillsInputs();
+  renderLanguagesInputs();
+  applyTemplate(cvState.template || 'classic', false);
+  applyTheme(cvState.theme || 'blue', false);
+}
+
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cvState)); } catch(e){}
+  calculateProgress();
+}
+
+function updateCV() {
+  cvState.fullName = document.getElementById('inputFullName').value;
+  cvState.jobTitle = document.getElementById('inputJobTitle').value;
+  cvState.phone    = document.getElementById('inputPhone').value;
+  cvState.address  = document.getElementById('inputAddress').value;
+  cvState.email    = document.getElementById('inputEmail').value;
+  cvState.linkedin = document.getElementById('inputLinkedin').value;
+  cvState.portfolio= document.getElementById('inputPortfolio').value;
+  cvState.summary  = document.getElementById('inputSummary').value;
+  renderPreview();
+  saveState();
+}
+
+/* ================= Photo ================= */
+function handlePhotoUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { alert('حجم الصورة كبير جداً (الحد الأقصى 5 ميجابايت)'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    cvState.photo = e.target.result;
+    ['cvPhotoDisplay','cvPhotoSidebar'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.src = cvState.photo; el.classList.remove('hidden'); }
+    });
+    document.getElementById('photoPlaceholder').classList.add('hidden');
+    document.getElementById('btnRemovePhoto').classList.remove('hidden');
+    saveState();
+  };
+  reader.readAsDataURL(file);
+}
+
+function removePhoto() {
+  cvState.photo = '';
+  document.getElementById('inputPhoto').value = '';
+  ['cvPhotoDisplay','cvPhotoSidebar'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('hidden');
+  });
+  document.getElementById('photoPlaceholder').classList.remove('hidden');
+  document.getElementById('btnRemovePhoto').classList.add('hidden');
+  saveState();
+}
+
+/* ================= Tabs ================= */
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.remove('border-sky-500','text-sky-400','active');
+    b.classList.add('border-transparent','text-slate-400');
+  });
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+  const btn = document.getElementById('tab-' + name);
+  const ctn = document.getElementById('content-' + name);
+  if (btn && ctn) {
+    btn.classList.add('border-sky-500','text-sky-400','active');
+    btn.classList.remove('border-transparent','text-slate-400');
+    ctn.classList.remove('hidden');
+    ctn.classList.add('panel-fade');
+  }
+}
+
+function switchMobileTab(mode) {
+  const editor  = document.getElementById('panelEditor');
+  const preview = document.getElementById('panelPreview');
+  const bE = document.getElementById('mobBtnEditor');
+  const bP = document.getElementById('mobBtnPreview');
+  const on  = 'flex-1 py-3 text-sky-400 border-b-2 border-sky-500 bg-slate-900/50 flex items-center justify-center gap-2 transition-colors';
+  const off = 'flex-1 py-3 text-slate-400 border-b-2 border-transparent hover:text-slate-200 flex items-center justify-center gap-2 transition-colors';
+  if (mode === 'editor') {
+    editor.classList.remove('hidden');
+    preview.classList.add('hidden'); preview.classList.remove('flex');
+    bE.className = on; bP.className = off;
+  } else {
+    editor.classList.add('hidden');
+    preview.classList.remove('hidden'); preview.classList.add('flex','panel-fade');
+    bP.className = on; bE.className = off;
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+}
+
+/* ================= Templates Grid ================= */
+function buildTemplateGrid() {
+  const grid = document.getElementById('templateGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  TEMPLATES.forEach(t => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.dataset.tpl = t.id;
+    btn.className = 'tpl-option p-2.5 rounded-xl border-2 border-slate-800 bg-slate-900 hover:border-sky-700 text-center transition';
+    btn.innerHTML =
+      '<div class="text-xl mb-1">' + t.icon + '</div>' +
+      '<div class="text-[11px] font-bold text-slate-200">' + t.name + '</div>' +
+      '<div class="text-[9px] text-slate-500">' + t.desc + '</div>';
+    btn.onclick = () => applyTemplate(t.id, true);
+    grid.appendChild(btn);
+  });
+}
+
+function applyTemplate(id, save) {
+  cvState.template = id;
+  document.querySelectorAll('.tpl-option').forEach(b => {
+    b.classList.remove('chip-active');
+    b.classList.add('border-slate-800','bg-slate-900');
+  });
+  const active = document.querySelector('.tpl-option[data-tpl="' + id + '"]');
+  if (active) { active.classList.add('chip-active'); }
+
+  const paper = document.getElementById('cvPaper');
+  paper.classList.remove('tpl-classic','tpl-sidebar','tpl-minimal','tpl-executive','tpl-modern','tpl-creative','tpl-compact','tpl-twocolumn');
+  paper.classList.add('tpl-' + id);
+
+  const sidebar     = paper.querySelector('.cv-sidebar');
+  const mainHeader  = paper.querySelector('.cv-header-inner');
+  const skillsSec   = document.getElementById('cvSkillsSection');
+  const langSec     = document.getElementById('cvLanguagesSection');
+
+  if (id === 'sidebar') {
+    sidebar.classList.remove('hidden');
+    mainHeader.classList.add('hidden');
+    if (skillsSec) skillsSec.classList.add('hidden');
+    if (langSec)   langSec.classList.add('hidden');
+  } else {
+    sidebar.classList.add('hidden');
+    mainHeader.classList.remove('hidden');
+    if (skillsSec) skillsSec.classList.remove('hidden');
+    if (langSec)   langSec.classList.remove('hidden');
+  }
+
+  renderPreview();
+  if (save) saveState();
+}
+
+/* ================= Themes Grid ================= */
+function buildThemeGrid() {
+  const grid = document.getElementById('themeGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  THEMES.forEach(t => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.dataset.theme = t.id;
+    btn.className = 'theme-option w-10 h-10 rounded-full border-2 border-slate-700 hover:scale-110 transition shadow-md';
+    btn.style.backgroundColor = t.color;
+    btn.title = t.name;
+    btn.onclick = () => applyTheme(t.id, true);
+    grid.appendChild(btn);
+  });
+}
+
+function applyTheme(id, save) {
+  cvState.theme = id;
+  const paper = document.getElementById('cvPaper');
+  paper.className = paper.className.replace(/theme-\w+/g, '');
+  paper.classList.add('theme-' + id);
+  document.querySelectorAll('.theme-option').forEach(b => {
+    b.classList.remove('border-white','ring-2','ring-sky-500');
+    b.classList.add('border-slate-700');
+  });
+  const active = document.querySelector('.theme-option[data-theme="' + id + '"]');
+  if (active) { active.classList.add('border-white','ring-2','ring-sky-500'); }
+  if (save) saveState();
+}
+
+/* ================= Experience ================= */
+function renderExperienceInputs() {
+  const c = document.getElementById('experienceList'); c.innerHTML = '';
+  cvState.experiences.forEach((exp, i) => {
+    const d = document.createElement('div');
+    d.className = 'p-3 bg-slate-900 border border-slate-800 rounded-xl relative space-y-2';
+    d.innerHTML =
+      '<button onclick="removeExperience(' + i + ')" class="absolute top-2 left-2 text-xs text-rose-400 hover:text-rose-300 font-bold">✕</button>' +
+      '<div><label class="block text-[11px] font-semibold text-slate-400 mb-0.5">المسمى الوظيفي</label>' +
+      '<input type="text" value="' + escapeHtml(exp.title) + '" oninput="updateExpItem(' + i + ',\'title\',this.value)" class="w-full text-xs p-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-100"></div>' +
+      '<div class="grid grid-cols-2 gap-2">' +
+      '<div><label class="block text-[11px] font-semibold text-slate-400 mb-0.5">الشركة</label>' +
+      '<input type="text" value="' + escapeHtml(exp.company) + '" oninput="updateExpItem(' + i + ',\'company\',this.value)" class="w-full text-xs p-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-100"></div>' +
+      '<div><label class="block text-[11px] font-semibold text-slate-400 mb-0.5">الفترة</label>' +
+      '<input type="text" value="' + escapeHtml(exp.dates) + '" oninput="updateExpItem(' + i + ',\'dates\',this.value)" class="w-full text-xs p-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-100"></div></div>' +
+      '<div><label class="block text-[11px] font-semibold text-slate-400 mb-0.5">الوصف</label>' +
+      '<textarea rows="2" oninput="updateExpItem(' + i + ',\'description\',this.value)" class="w-full text-xs p-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-100 resize-none">' + escapeHtml(exp.description) + '</textarea></div>';
+    c.appendChild(d);
+  });
+}
+function addExperienceItem() { cvState.experiences.push({id:Date.now(), title:'مسمى وظيفي', company:'اسم الشركة', dates:'2022 - 2024', description:'وصف المهام والإنجازات...'}); renderExperienceInputs(); renderPreview(); saveState(); }
+function removeExperience(i) { cvState.experiences.splice(i,1); renderExperienceInputs(); renderPreview(); saveState(); }
+function updateExpItem(i,k,v) { cvState.experiences[i][k] = v; renderPreview(); saveState(); }
+
+/* ================= Education ================= */
+function renderEducationInputs() {
+  const c = document.getElementById('educationList'); c.innerHTML = '';
+  cvState.education.forEach((ed, i) => {
+    const d = document.createElement('div');
+    d.className = 'p-3 bg-slate-900 border border-slate-800 rounded-xl relative space-y-2';
+    d.innerHTML =
+      '<button onclick="removeEducation(' + i + ')" class="absolute top-2 left-2 text-xs text-rose-400 hover:text-rose-300 font-bold">✕</button>' +
+      '<div><label class="block text-[11px] font-semibold text-slate-400 mb-0.5">الدرجة العلمية</label>' +
+      '<input type="text" value="' + escapeHtml(ed.degree) + '" oninput="updateEduItem(' + i + ',\'degree\',this.value)" class="w-full text-xs p-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-100"></div>' +
+      '<div class="grid grid-cols-2 gap-2">' +
+      '<div><label class="block text-[11px] font-semibold text-slate-400 mb-0.5">المؤسسة</label>' +
+      '<input type="text" value="' + escapeHtml(ed.institution) + '" oninput="updateEduItem(' + i + ',\'institution\',this.value)" class="w-full text-xs p-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-100"></div>' +
+      '<div><label class="block text-[11px] font-semibold text-slate-400 mb-0.5">الفترة</label>' +
+      '<input type="text" value="' + escapeHtml(ed.dates) + '" oninput="updateEduItem(' + i + ',\'dates\',this.value)" class="w-full text-xs p-2 bg-slate-950 border border-slate-800 rounded-lg text-slate-100"></div></div>';
+    c.appendChild(d);
+  });
+}
+function addEducationItem() { cvState.education.push({id:Date.now(), degree:'بكالوريوس', institution:'جامعة تشرين', dates:'2018 - 2022'}); renderEducationInputs(); renderPreview(); saveState(); }
+function removeEducation(i) { cvState.education.splice(i,1); renderEducationInputs(); renderPreview(); saveState(); }
+function updateEduItem(i,k,v) { cvState.education[i][k] = v; renderPreview(); saveState(); }
+
+/* ================= Skills ================= */
+function renderSkillsInputs() {
+  const c = document.getElementById('skillsList'); c.innerHTML = '';
+  cvState.skills.forEach((sk, i) => {
+    const d = document.createElement('div');
+    d.className = 'flex items-center gap-2';
+    d.innerHTML =
+      '<input type="text" value="' + escapeHtml(sk.name) + '" oninput="updateSkillItem(' + i + ',\'name\',this.value)" placeholder="المهارة" class="flex-1 text-xs p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-100">' +
+      '<input type="text" value="' + escapeHtml(sk.level) + '" oninput="updateSkillItem(' + i + ',\'level\',this.value)" placeholder="المستوى" class="w-20 sm:w-24 text-xs p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-100">' +
+      '<button onclick="removeSkill(' + i + ')" class="text-xs text-rose-400 p-1.5">✕</button>';
+    c.appendChild(d);
+  });
+}
+function addSkillItem() { cvState.skills.push({name:'مهارة جديدة', level:'متقدم'}); renderSkillsInputs(); renderPreview(); saveState(); }
+function removeSkill(i) { cvState.skills.splice(i,1); renderSkillsInputs(); renderPreview(); saveState(); }
+function updateSkillItem(i,k,v) { cvState.skills[i][k] = v; renderPreview(); saveState(); }
+
+/* ================= Languages ================= */
+function renderLanguagesInputs() {
+  const c = document.getElementById('languagesList'); c.innerHTML = '';
+  cvState.languages.forEach((lg, i) => {
+    const d = document.createElement('div');
+    d.className = 'flex items-center gap-2';
+    d.innerHTML =
+      '<input type="text" value="' + escapeHtml(lg.name) + '" oninput="updateLangItem(' + i + ',\'name\',this.value)" placeholder="اللغة" class="flex-1 text-xs p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-100">' +
+      '<input type="text" value="' + escapeHtml(lg.level) + '" oninput="updateLangItem(' + i + ',\'level\',this.value)" placeholder="المستوى" class="w-20 sm:w-24 text-xs p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-100">' +
+      '<button onclick="removeLang(' + i + ')" class="text-xs text-rose-400 p-1.5">✕</button>';
+    c.appendChild(d);
+  });
+}
+function addLanguageItem() { cvState.languages.push({name:'لغة جديدة', level:'جيد'}); renderLanguagesInputs(); renderPreview(); saveState(); }
+function removeLang(i) { cvState.languages.splice(i,1); renderLanguagesInputs(); renderPreview(); saveState(); }
+function updateLangItem(i,k,v) { cvState.languages[i][k] = v; renderPreview(); saveState(); }
+
+/* ================= Preview Render ================= */
+function renderPreview() {
+  document.getElementById('cvFullName').textContent = cvState.fullName || 'الاسم الكامل';
+  document.getElementById('cvJobTitle').textContent = cvState.jobTitle || 'المسمى الوظيفي';
+  document.getElementById('cvFullNameSidebar').textContent = cvState.fullName || 'الاسم الكامل';
+  document.getElementById('cvJobTitleSidebar').textContent = cvState.jobTitle || 'المسمى الوظيفي';
+
+  const phone     = cvState.phone     ? '📱 ' + cvState.phone     : '';
+  const address   = cvState.address   ? '📍 ' + cvState.address   : '';
+  const email     = cvState.email     ? '✉️ ' + cvState.email     : '';
+  const linkedin  = cvState.linkedin  ? '🔗 ' + cvState.linkedin  : '';
+  const portfolio = cvState.portfolio && cvState.portfolio.trim() ? '🎨 ' + cvState.portfolio : '';
+
+  document.getElementById('cvPhoneDisplay').innerHTML     = escapeHtml(phone);
+  document.getElementById('cvAddressDisplay').innerHTML   = escapeHtml(address);
+  document.getElementById('cvEmailDisplay').innerHTML     = escapeHtml(email);
+  document.getElementById('cvLinkedinDisplay').innerHTML  = escapeHtml(linkedin);
+  document.getElementById('cvPortfolioDisplay').innerHTML = escapeHtml(portfolio);
+
+  const sc = document.getElementById('cvContactSidebar');
+  if (sc) {
+    sc.innerHTML = [phone,address,email,linkedin,portfolio].filter(Boolean)
+      .map(x => '<div>' + escapeHtml(x) + '</div>').join('');
+  }
+
+  // Summary
+  const sumSec = document.getElementById('cvSummarySection');
+  if (cvState.summary && cvState.summary.trim()) {
+    sumSec.style.display = 'block';
+    document.getElementById('cvSummary').textContent = cvState.summary;
+  } else sumSec.style.display = 'none';
+
+  // Experience
+  const expC = document.getElementById('cvExperienceDisplay'); expC.innerHTML = '';
+  if (cvState.experiences && cvState.experiences.length) {
+    document.getElementById('cvExperienceSection').style.display = 'block';
+    cvState.experiences.forEach(e => {
+      const it = document.createElement('div'); it.className = 'page-break';
+      it.innerHTML =
+        '<div class="flex justify-between items-baseline mb-0.5 flex-wrap gap-1">' +
+          '<h3 class="text-xs md:text-sm font-bold text-slate-800">' + escapeHtml(e.title) + '</h3>' +
+          '<span class="text-[11px] font-semibold text-slate-500">' + escapeHtml(e.dates) + '</span>' +
+        '</div>' +
+        '<div class="text-xs font-semibold cv-dynamic-text mb-0.5">' + escapeHtml(e.company) + '</div>' +
+        '<p class="text-xs text-slate-600 leading-relaxed">' + escapeHtml(e.description) + '</p>';
+      expC.appendChild(it);
+    });
+  } else document.getElementById('cvExperienceSection').style.display = 'none';
+
+  // Education
+  const eduC = document.getElementById('cvEducationDisplay'); eduC.innerHTML = '';
+  if (cvState.education && cvState.education.length) {
+    document.getElementById('cvEducationSection').style.display = 'block';
+    cvState.education.forEach(ed => {
+      const it = document.createElement('div'); it.className = 'page-break';
+      it.innerHTML =
+        '<div class="flex justify-between items-baseline flex-wrap gap-1">' +
+          '<h3 class="text-xs md:text-sm font-bold text-slate-800">' + escapeHtml(ed.degree) + '</h3>' +
+          '<span class="text-[11px] font-semibold text-slate-500">' + escapeHtml(ed.dates) + '</span>' +
+        '</div>' +
+        '<div class="text-xs text-slate-600 font-medium">' + escapeHtml(ed.institution) + '</div>';
+      eduC.appendChild(it);
+    });
+  } else document.getElementById('cvEducationSection').style.display = 'none';
+
+  // Skills
+  const skC = document.getElementById('cvSkillsDisplay'); skC.innerHTML = '';
+  if (cvState.skills && cvState.skills.length) {
+    document.getElementById('cvSkillsSection').style.display = 'block';
+    cvState.skills.forEach(sk => {
+      const b = document.createElement('span');
+      b.className = 'text-xs px-2.5 py-1 rounded-md cv-dynamic-bg-light border cv-dynamic-border-light font-medium text-slate-700';
+      b.textContent = sk.name + (sk.level ? ' • (' + sk.level + ')' : '');
+      skC.appendChild(b);
+    });
+  } else document.getElementById('cvSkillsSection').style.display = 'none';
+
+  // Sidebar skills
+  const skS = document.getElementById('cvSkillsSidebar');
+  if (skS) {
+    skS.innerHTML = (cvState.skills||[]).map(sk =>
+      '<div>• ' + escapeHtml(sk.name) + (sk.level ? ' <span style="opacity:.7">(' + escapeHtml(sk.level) + ')</span>' : '') + '</div>'
+    ).join('');
+  }
+
+  // Languages
+  const lgC = document.getElementById('cvLanguagesDisplay'); lgC.innerHTML = '';
+  if (cvState.languages && cvState.languages.length) {
+    document.getElementById('cvLanguagesSection').style.display = 'block';
+    cvState.languages.forEach(lg => {
+      const it = document.createElement('div');
+      it.className = 'text-xs flex justify-between border-b border-slate-100 pb-1';
+      it.innerHTML = '<span class="font-semibold text-slate-700">' + escapeHtml(lg.name) + '</span>' +
+                     '<span class="text-slate-500">' + escapeHtml(lg.level) + '</span>';
+      lgC.appendChild(it);
+    });
+  } else document.getElementById('cvLanguagesSection').style.display = 'none';
+
+  // Sidebar languages
+  const lgS = document.getElementById('cvLanguagesSidebar');
+  if (lgS) {
+    lgS.innerHTML = (cvState.languages||[]).map(lg =>
+      '<div class="flex justify-between"><span>' + escapeHtml(lg.name) + '</span><span style="opacity:.7">' + escapeHtml(lg.level) + '</span></div>'
+    ).join('');
+  }
+}
+
+/* ================= Progress ================= */
+function calculateProgress() {
+  let s = 0;
+  if (cvState.fullName) s += 20;
+  if (cvState.jobTitle) s += 15;
+  if (cvState.phone || cvState.email || cvState.linkedin) s += 15;
+  if (cvState.summary) s += 15;
+  if (cvState.experiences && cvState.experiences.length) s += 15;
+  if (cvState.education && cvState.education.length) s += 10;
+  if (cvState.skills && cvState.skills.length) s += 10;
+  document.getElementById('progressBar').style.width = s + '%';
+  document.getElementById('progressText').textContent = s + '%';
+}
+
+function renderAll() { renderPreview(); calculateProgress(); }
+
+/* ================= Actions ================= */
+function loadSampleData() {
+  if (!confirm('سيتم استبدال البيانات الحالية بنموذج جاهز. هل تريد المتابعة؟')) return;
+  cvState = JSON.parse(JSON.stringify(defaultSyriaState));
+  populateFormFromState();
+  buildTemplateGrid();
+  buildThemeGrid();
+  renderAll();
+  saveState();
+}
+
+function resetForm() {
+  if (!confirm('سيتم حذف جميع البيانات. هل أنت متأكد؟')) return;
+  cvState = JSON.parse(JSON.stringify(emptyState));
+  document.getElementById('inputPhoto').value = '';
+  document.getElementById('cvPhotoDisplay').classList.add('hidden');
+  document.getElementById('cvPhotoSidebar').classList.add('hidden');
+  document.getElementById('photoPlaceholder').classList.remove('hidden');
+  document.getElementById('btnRemovePhoto').classList.add('hidden');
+  populateFormFromState();
+  buildTemplateGrid();
+  buildThemeGrid();
+  renderAll();
+  saveState();
+}
+
+function exportToPDF() {
+  if (window.innerWidth < 1024) switchMobileTab('preview');
+  setTimeout(() => window.print(), 250);
+}
+
+/* ================= Utils ================= */
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str).replace(/[&<>"']/g, m => (
+    {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]
+  ));
+}
+</script>
+
+</body>
+</html>
